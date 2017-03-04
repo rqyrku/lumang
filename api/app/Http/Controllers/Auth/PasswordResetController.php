@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 class PasswordResetController extends Controller
 {
 
+  /**
+   * Send reset password email to user.
+   *
+   * @param Request $request
+   * @return \Symfony\Component\HttpFoundation\Response
+   */
     public function sendResetLinkEmail(Request $request)
     {
         $this->validate($request, [
