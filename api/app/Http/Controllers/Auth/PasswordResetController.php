@@ -39,7 +39,12 @@ class PasswordResetController extends Controller
         return response()->success(true);
     }
 
-
+    /**
+     * Verify the users token and email.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function verify(Request $request)
     {
         $this->validate($request, [
@@ -55,7 +60,12 @@ class PasswordResetController extends Controller
         return response()->success(true);
     }
 
-
+    /**
+     * Reset users password.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function reset(Request $request)
     {
         $this->validate($request, [
