@@ -17,20 +17,21 @@ class LoginController extends Controller
      */
     public function login(Request $request, JWTAuth $JWTAuth)
     {
+      
       $this->validate($request, [
           'email'    => 'required|email',
           'password' => 'required|min:8',
       ]);
 
-      $credentials = $request->only('email', 'password');
+      $credentials = $request->only(['email', 'password']);
 
       try {
           // verify the credentials and create a token for the user
           if (! $token = $JWTAuth->attempt($credentials)) {
-              return response()->error('Invalid credentials', 401);
+              return response()->json(['error' => 'Invalid credentials'], 401);
           }
       } catch (\JWTException $e) {
-          return response()->error('Could not create token', 500);
+          return response()->json(['error' => 'Could not create token'], 500);
       }
 
 
@@ -48,7 +49,7 @@ class LoginController extends Controller
     public function verify(JWTAuth $JWTAuth)
     {
         if (!$user = $JWTAuth->parseToken()->authenticate()) {
-            return response()->json(['user_not_found'], 404);
+            return response()->json(['error' => 'User Not Found'], 404);
         }
 
         // the token is valid and we have found the user via the sub claim

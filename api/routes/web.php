@@ -14,5 +14,8 @@
 
 $app->get('/', 'AngularController@serve');
 
-$app->post('/login', 'Auth\LoginController@login');
-$app->post('/signup', 'Auth\SignUpController@signUp');
+$app->group(['prefix' => 'api', 'namespace' => 'Auth'], function()  use ($app)
+{
+    $app->post('/login', 'LoginController@login');
+    $app->post('/signup', 'SignUpController@signUp');
+});
