@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions, Response } from '@angular/http';
+import { VARIABLES } from '../_variables/index';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
     create(name: string, email: string, password: string) {
         let body = JSON.stringify({ name: name, email: email, password: password });
 
-        return this.http.post('/api/signup', body, this.jwt()).map((response: Response) => response.json());
+        return this.http.post(VARIABLES.api + 'api/signup', body, this.jwt()).map((response: Response) => response.json());
     }
 
     // update(id: number) {
