@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpModule} from '@angular/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpModule } from '@angular/http';
+import { AuthenticationService } from './_services/index';
 
 
 /**
@@ -12,7 +13,29 @@ import {HttpModule} from '@angular/http';
     templateUrl: 'app.component.html',
 })
 export class AppComponent implements OnInit {
-    
+
+    currentUser:Object;
+    loggedIn: any;
+
     ngOnInit() {
+    }
+
+    constructor(private auth: AuthenticationService) {
+        this.loggedIn = this.auth.isLoggedIn;
+    }
+
+
+    isLoggedIn()
+    {
+      if(this.loggedIn == true){
+        let currentUser = JSON.parse(sessionStorage.getItem('currentUser'))
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+    logout(){
+      sessionStorage.removeItem('currentUser');
     }
 }
