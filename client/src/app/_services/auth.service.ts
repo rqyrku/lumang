@@ -1,34 +1,32 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { ApiService } from '../_services/api.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthenticationService {
   public token: string;
+  public user: Object;
 
-  constructor(private http: Http) {
-      // set token if saved in local storage
-      var currentUser = JSON.parse(localStorage.getItem('currentUser'));
-      this.token = currentUser && currentUser.token;
+  constructor(private http: Http, private api: ApiService ) {
+
   }
 
-  login(email: string, password: string): Observable<boolean> {
+  login(email: string, password: string): Observable<any> {
 
-    let body = JSON.stringify({ email: email, password: password });
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-
-    return this.http.post('/api/login', body, options)
-        .map((response: Response) => {
+    return this.http.post('/api/login', JSON.stringify({ email: email, password: password }))
+        .map((response: any) => {
             // login successful if there's a jwt token in the response
             let token = response.json().data.token;
+            let user = response.json().data.user;
+
             if (token) {
                 // set token property
                 this.token = token;
-
+                this.user = user
                 // store username and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify({ email: email, token: token }));
+                localStorage.setItem('currentUser', JSON.stringify({ user: user, token: token }));
 
                 // return true to indicate successful login
                 return true;

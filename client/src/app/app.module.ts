@@ -14,7 +14,7 @@ import { AuthenticationService, UserService } from './_services/index';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

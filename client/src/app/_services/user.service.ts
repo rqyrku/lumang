@@ -13,11 +13,13 @@ export class UserService {
         return this.http.get('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
     }
 
-    // create(user: User) {
-    //     return this.http.post('/api/users', user, this.jwt()).map((response: Response) => response.json());
-    // }
-    //
-    // update(user: User) {
+    create(name: string, email: string, password: string) {
+        let body = JSON.stringify({ name: name, email: email, password: password });
+
+        return this.http.post('/api/signup', body, this.jwt()).map((response: Response) => response.json());
+    }
+
+    // update(id: number) {
     //     return this.http.put('/api/users/' + user.id, user, this.jwt()).map((response: Response) => response.json());
     // }
 
@@ -30,9 +32,12 @@ export class UserService {
     private jwt() {
         // create authorization header with jwt token
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
         if (currentUser && currentUser.token) {
-            let headers = new Headers({ 'Authorization': 'Bearer ' + currentUser.token });
-            return new RequestOptions({ headers: headers });
+            headers.append('Authorization', 'Bearer ' + currentUser.token);
         }
+        return new RequestOptions({ headers: headers });
     }
 }
